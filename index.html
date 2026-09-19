@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="format-detection" content="telephone=no,email=no,address=no" />
+<meta name="theme-color" content="#f0ece2" />
+<title>GeniFlare 天才之火</title>
+<meta name="description" content="用数字器官连接 AI、医生、再生医学与新药研发。可交互的专业演示（示例数据）。" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="GeniFlare 天才之火 · 数字器官与医学智能平台" />
+<meta property="og:description" content="用数字器官连接 AI、医生、再生医学与新药研发。可交互的专业演示（示例数据）。" />
+<meta property="og:image" content="share-cover.png" />
+<meta itemprop="name" content="GeniFlare 天才之火" />
+<meta itemprop="image" content="share-cover.png" />
+<!-- 字体全部使用系统字体：Google Fonts 在中国大陆常被屏蔽，会拖慢微信内首屏。 -->
+<style>
+:root{
+  --paper:#f0ece2; --paper-2:#f7f4ec; --ink:#191814; --ink-2:#55524a; --mute:#7d7767; --rule:#d6cfbe; --rule-2:#b9b19b;
+  --bronze:#76663f; --accent:#1f6b5c; --down:#9b2f22;
+  --dk:#191814; --dk-2:#22211b; --dk-rule:#3a382f; --bone:#ece6d6; --bone-2:#b3ac98; --flare:#e88c42;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Songti SC","Noto Serif CJK SC","Source Han Serif SC",STSong,SimSun,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","HarmonyOS Sans SC","Noto Sans CJK SC","Microsoft YaHei",Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"PingFang SC","Microsoft YaHei",monospace;
+  --gut:20px; color-scheme:light;
+}
+body[data-lang="zh"]{--serif:"Songti SC","Noto Serif CJK SC","Source Han Serif SC",STSong,"Iowan Old Style",Georgia,SimSun,serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ol,ul{margin:0;padding:0}
+ol,ul{list-style:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0;text-align:left}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+section,footer{scroll-margin-top:64px}
+.wrap{width:min(1120px,100% - 2*var(--gut));margin-inline:auto}
+@media (min-width:800px){:root{--gut:40px}}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eb{font:500 11px/1.5 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--bronze)}
+body[data-lang="zh"] .eb{letter-spacing:.14em}
+.hs{font-family:var(--serif);font-weight:400;letter-spacing:-.03em;line-height:1.05;text-wrap:balance}
+body[data-lang="zh"] .hs{letter-spacing:-.01em;line-height:1.24;font-weight:500}
+.lede{font-size:17px;color:var(--ink-2);max-width:56ch;line-height:1.65}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;background:var(--ink);color:var(--bone);border:1px solid var(--ink);font:700 13px var(--sans);letter-spacing:.05em;text-align:center}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.light{background:var(--bone);color:var(--ink);border-color:var(--bone)}
+.btn.block{display:flex;width:100%}
+.lnk{display:inline-flex;align-items:center;gap:8px;min-height:44px;font:500 14px var(--sans);border-bottom:1px solid var(--ink);padding:0 0 4px;align-self:flex-start}
+
+/* header */
+.hd{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--rule)}
+.hd .wrap{display:flex;align-items:center;height:64px;gap:16px}
+.wm{font:700 13px var(--sans);letter-spacing:.3em}
+.hd-r{margin-left:auto;display:flex;align-items:center;gap:6px}
+.lang{display:flex;align-items:center;font:500 12px var(--sans);color:var(--mute)}
+.lang button{min-width:44px;min-height:44px;display:grid;place-items:center;color:var(--mute);font-weight:500}
+.lang button.on{color:var(--ink);font-weight:700}
+.req{display:none;min-height:44px;padding:0 16px;border:1px solid var(--ink);font:500 13px var(--sans)}
+.menu{min-height:44px;padding:0 4px 0 10px;font:500 13px var(--sans);letter-spacing:.06em}
+@media (min-width:800px){.req{display:inline-flex;align-items:center}.hd-r{gap:14px}}
+
+/* hero */
+.hero{padding:56px 0 44px}
+.hero h1{font-size:clamp(44px,13.4vw,96px);margin-top:22px;max-width:14ch}
+body[data-lang="zh"] .hero h1{font-size:clamp(36px,10.6vw,80px);max-width:12em}
+.hero .lede{margin-top:26px}
+.hero .cta{display:flex;flex-direction:column;gap:20px;margin-top:34px;align-items:stretch}
+.pilot{display:flex;gap:10px;align-items:center;margin-top:46px;font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.pilot i{width:7px;height:7px;border-radius:50%;background:var(--bronze);flex:none}
+@media (min-width:800px){.hero{padding:96px 0 72px}.hero .cta{flex-direction:row;align-items:center;gap:32px}.hero .btn{min-width:260px}}
+
+/* organ band */
+.band{background:var(--dk);color:var(--bone)}
+.stage{position:relative;height:min(96vw,580px)}
+.stage canvas{position:absolute;top:0;left:0;width:100%;height:100%;touch-action:pan-y;cursor:grab}
+.stage .or{position:absolute;font:400 11px var(--mono);color:var(--bone-2);pointer-events:none}
+.stage .or.s{top:14px;left:50%;transform:translateX(-50%)} .stage .or.i{bottom:64px;left:50%;transform:translateX(-50%)}
+.stage .or.l{right:var(--gut);top:50%} .stage .or.r{left:var(--gut);top:50%}
+.stage .hint{position:absolute;top:14px;right:var(--gut);font:400 11px var(--mono);letter-spacing:.1em;color:var(--bone-2);pointer-events:none}
+.vmode{position:absolute;left:var(--gut);bottom:14px;display:flex;gap:6px}
+.vmode button,.legend{font:500 11px var(--mono);letter-spacing:.06em}
+.vmode button{min-height:36px;padding:0 12px;border:1px solid var(--dk-rule);color:var(--bone-2);background:rgba(25,24,20,.6)}
+.vmode button.on{background:var(--bone);color:var(--ink);border-color:var(--bone)}
+.legend{position:absolute;right:var(--gut);bottom:20px;display:flex;align-items:center;gap:8px;color:var(--bone-2);pointer-events:none}
+.legend i{display:block;width:64px;height:5px;background:linear-gradient(90deg,#1e3a36,#567868 35%,#d6c6a0 60%,#e88c42 80%,#ffd68c)}
+.cap{background:#12110e;padding:16px 0;font:400 11px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--bone-2)}
+@media (max-width:520px){.legend{right:auto;left:var(--gut);bottom:auto;top:14px}.legend i{width:40px}.legend span:first-child{display:none}.stage .or.i{bottom:60px}}
+
+/* sequence */
+.seq li{display:grid;grid-template-columns:44px 1fr;align-items:baseline;padding:28px 0;border-bottom:1px solid var(--rule)}
+.seq .n{font:400 11px var(--mono);color:var(--mute)}
+.seq .t{font:400 clamp(24px,6vw,34px)/1.2 var(--serif);letter-spacing:-.01em}
+body[data-lang="zh"] .seq .t{font-weight:500}
+
+/* category */
+.sec{padding:84px 0}
+.sec h2{font-size:clamp(34px,9.6vw,64px);margin-top:20px;max-width:16ch}
+body[data-lang="zh"] .sec h2{font-size:clamp(30px,8.4vw,54px);max-width:14em}
+.sec .lede{margin-top:24px}
+.steps{margin-top:44px;border-top:1px solid var(--rule)}
+.steps li{display:grid;grid-template-columns:44px 1fr;gap:4px 0;padding:26px 0;border-bottom:1px solid var(--rule)}
+.steps .n{font:400 11px var(--mono);color:var(--mute);padding-top:8px}
+.steps h3{font:400 24px/1.25 var(--serif);letter-spacing:-.01em}
+body[data-lang="zh"] .steps h3{font-weight:500}
+.steps p{grid-column:2;color:var(--ink-2);max-width:52ch}
+@media (min-width:800px){.steps{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule)}.steps li{display:block;padding:28px 28px 32px 0;border-bottom:0}.steps .n{display:block;padding:0 0 14px}}
+
+/* demo card */
+.demo-hd{max-width:760px}
+.card{margin-top:44px;border:1px solid var(--ink);background:var(--paper-2)}
+.card-hd{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--ink);font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase}
+.pf{display:flex;border-bottom:1px solid var(--rule)}
+.pf button{flex:1;min-height:52px;text-align:center;font:500 14px var(--sans);color:var(--mute);border-right:1px solid var(--rule)}
+.pf button:last-child{border-right:0}
+.pf button.on{color:var(--ink);background:var(--paper);font-weight:700;box-shadow:inset 0 -2px 0 var(--ink)}
+.dm{display:grid;gap:0;grid-template-columns:minmax(0,1fr)}
+.dm-l,.dm-r{padding:20px 18px;min-width:0}
+.vp2{position:relative;aspect-ratio:1/1;max-height:420px;width:100%;background:var(--dk);overflow:hidden}
+@supports not (aspect-ratio:1/1){.vp2{height:0;padding-top:100%}}
+.vp2 canvas{position:absolute;top:0;left:0;width:100%;height:100%;touch-action:pan-y;cursor:grab}
+.vp2 .tag,.vp2 .hint{position:absolute;top:10px;font:400 10px var(--mono);letter-spacing:.1em;color:var(--bone-2);pointer-events:none}
+.vp2 .tag{left:12px}.vp2 .hint{right:12px}
+.feats{margin-top:18px;border-top:1px solid var(--rule)}
+.feats h4,.lbl{font:500 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--bronze);margin:0}
+body[data-lang="zh"] .feats h4,body[data-lang="zh"] .lbl{letter-spacing:.1em}
+.feats h4{padding:14px 0 6px}
+.ft{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule);font-size:14px}
+.ft b{font:500 15px var(--mono);font-weight:500}
+.ft small{font:400 11px var(--mono);color:var(--mute);margin-left:4px}
+.big{display:flex;align-items:baseline;gap:6px;margin-top:8px}
+.big .num{font:400 clamp(80px,24vw,120px)/.95 var(--serif);letter-spacing:-.04em}
+.big .of{font:400 16px var(--mono);color:var(--mute)}
+.dlt{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:8px;font:500 15px var(--mono)}
+.dlt span{font:400 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+body[data-lang="zh"] .dlt span{letter-spacing:.06em}
+.dn{color:var(--down)} .up{color:var(--accent)}
+.srows{margin-top:22px;border-top:1px solid var(--rule)}
+.srow{display:grid;grid-template-columns:1fr auto 56px;gap:12px;align-items:baseline;width:100%;min-height:56px;padding:14px 12px;border-bottom:1px solid var(--rule);font-size:15px}
+.srow .mono{font-size:15px}
+.srow .mono:last-child{text-align:right}
+.srow.on{background:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);font-weight:700}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:30px;margin-bottom:10px}
+.seg{display:flex;border:1px solid var(--ink)}
+.seg button{min-height:40px;padding:0 14px;font:500 12px var(--mono);letter-spacing:.06em;border-right:1px solid var(--ink);text-align:center}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--ink);color:var(--bone)}
+.ch{display:block;width:100%;height:auto}
+.ch text{font:400 10px var(--mono);fill:var(--mute)}
+.ch .g{stroke:var(--rule);stroke-width:1}
+.ch .lb{paint-order:stroke;stroke:#f7f4ec;stroke-width:4px;stroke-linejoin:round}
+.lgd{display:flex;flex-wrap:wrap;gap:6px 18px;font:400 11px var(--mono);color:var(--ink-2);margin:8px 0 4px}
+.lgd i{display:inline-block;width:18px;height:0;border-top:2px solid var(--accent);vertical-align:middle;margin-right:6px}
+.lgd i.d{border-top:2px dashed var(--ink-2)} .lgd i.b{height:8px;border:0;background:rgba(31,107,92,.18)}
+.pchips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:14px calc(-1*18px) 0;padding:0 18px}
+.pchips::-webkit-scrollbar{display:none}
+.pchips button{flex:none;min-height:44px;padding:0 16px;border:1px solid var(--rule-2);font:500 13px var(--sans);background:transparent}
+.pchips button.on{background:var(--ink);color:var(--bone);border-color:var(--ink)}
+.row2{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px}
+.res{margin-top:18px;padding:16px 0 0;border-top:1px solid var(--ink);font-size:16px;line-height:1.6;color:var(--ink)}
+.res b{font-family:var(--mono);font-weight:500}
+.sum{margin-top:26px;padding-top:16px;border-top:1px solid var(--rule)}
+.sum p{margin-top:8px;color:var(--ink-2);font-size:15px}
+.note{margin-top:22px}
+.note textarea{display:block;width:100%;min-height:96px;margin-top:8px;padding:12px 14px;border:1px solid var(--ink);background:var(--paper);font-size:16px;line-height:1.55;border-radius:0;resize:vertical}
+.note .btn{margin-top:12px}
+.disc{padding:14px 18px;border-top:1px solid var(--rule);font:400 12px/1.6 var(--sans);color:var(--mute)}
+@media (min-width:900px){
+  .dm{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
+  .dm-l{border-right:1px solid var(--rule);padding:28px}.dm-r{padding:28px}
+  .dm-l .vp2{position:sticky;top:88px}
+  .pchips{margin-inline:0;padding-inline:0;flex-wrap:wrap;overflow:visible}
+  .note .btn{width:auto}
+}
+
+/* trail */
+.dark{background:var(--dk);color:var(--bone)}
+.dark .eb{color:var(--bone-2)}
+.dark .lede{color:var(--bone-2)}
+.trail-grid{display:grid;gap:44px;margin-top:44px}
+.cons li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;border-bottom:1px solid var(--dk-rule)}
+.cons li:first-child{border-top:1px solid var(--dk-rule)}
+.cons b{display:block;font:500 16px var(--sans)}
+.cons small{display:block;font-size:13px;color:var(--bone-2);line-height:1.45;margin-top:2px}
+.sw{position:relative;flex:none;width:52px;height:28px;border:1px solid var(--bone-2)}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;background:var(--bone-2);transition:transform .2s,background .2s}
+.sw.on{border-color:var(--bone)} .sw.on::after{transform:translateX(24px);background:var(--flare)}
+.log li{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:16px 0;border-bottom:1px solid var(--dk-rule);font-size:14px}
+.log li:first-child{border-top:1px solid var(--dk-rule)}
+.log .ty{font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--flare)}
+.log .tm{font:400 11px var(--mono);color:var(--bone-2);text-align:right}
+.log .tt{grid-column:1/-1;color:var(--bone)}
+.log-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.log-h span{font:400 11px var(--mono);color:var(--bone-2)}
+@media (min-width:900px){.trail-grid{grid-template-columns:5fr 6fr;gap:72px}.log li{grid-template-columns:150px 96px 1fr;align-items:baseline}.log .tm{order:-1;text-align:left}.log .tt{grid-column:auto}}
+
+/* roles & workspaces */
+.roles{margin-top:40px;border-top:1px solid var(--rule)}
+.role{display:grid;gap:8px;width:100%;padding:28px 0;border-bottom:1px solid var(--rule)}
+.role .rt{font:400 28px/1.2 var(--serif);letter-spacing:-.01em}
+body[data-lang="zh"] .role .rt{font-weight:500}
+.role .rp{color:var(--ink-2);max-width:56ch}
+.role .rl{font:500 13px var(--sans);margin-top:6px;border-bottom:1px solid var(--ink);align-self:flex-start;justify-self:start;padding-bottom:3px}
+@media (min-width:900px){.roles{display:grid;grid-template-columns:repeat(3,1fr);column-gap:36px}.role{align-content:start;border-bottom:0;padding-right:8px}}
+.rchips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:32px calc(-1*var(--gut)) 0;padding:0 var(--gut)}
+.rchips::-webkit-scrollbar{display:none}
+.rchips button{flex:none;min-height:44px;padding:0 18px;border:1px solid var(--rule-2);font:500 13px var(--sans)}
+.rchips button.on{background:var(--ink);color:var(--bone);border-color:var(--ink)}
+@media (min-width:800px){.rchips{margin-inline:0;padding-inline:0}}
+.wsl{margin-top:20px;border-top:1px solid var(--rule)}
+.wsr{border-bottom:1px solid var(--rule);transition:opacity .2s}
+.wsr.dim{opacity:.38}
+.wsr>button{display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;width:100%;min-height:72px;padding:14px 0}
+.wsr .nm{font:400 clamp(22px,5.6vw,30px)/1.2 var(--serif);letter-spacing:-.01em}
+.wsr .nm small{display:block;font:400 13px var(--sans);letter-spacing:0;color:var(--mute);margin-top:2px}
+body[data-lang="zh"] .wsr .nm{font-weight:500}
+.wsr .tg{display:flex;align-items:center;gap:10px;font:400 10px var(--mono);letter-spacing:.1em;color:var(--mute);text-transform:uppercase}
+.wsr .tg i{font:300 22px/1 var(--sans);font-style:normal;color:var(--ink)}
+.wsr .bd{padding:0 0 22px;color:var(--ink-2);max-width:60ch;font-size:15px}
+.wsr .bd em{display:block;margin-top:10px;font:400 11px var(--mono);letter-spacing:.1em;color:var(--down);font-style:normal;text-transform:uppercase}
+
+/* one system */
+.one{display:grid;gap:0;margin-top:40px;border-top:1px solid var(--ink)}
+.one>div{padding:26px 0;border-bottom:1px solid var(--rule)}
+.one h3{font:400 28px/1.2 var(--serif);letter-spacing:-.01em}
+body[data-lang="zh"] .one h3{font-weight:500}
+.one p{margin-top:8px;color:var(--ink-2);max-width:46ch}
+.one-note{margin-top:24px;font:400 12px/1.7 var(--mono);color:var(--ink-2);max-width:70ch}
+@media (min-width:800px){.one{grid-template-columns:1fr 1fr}.one>div{padding:32px 40px 32px 0}}
+
+/* access & forms */
+.access-grid{display:grid;gap:40px;margin-top:8px}
+.form{display:grid;gap:18px}
+.form label{display:block;font:500 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--bone-2);margin-bottom:8px}
+body[data-lang="zh"] .form label{letter-spacing:.08em}
+.form input,.form select{display:block;width:100%;min-height:52px;padding:0 14px;border:1px solid var(--bone-2);background:transparent;color:var(--bone);font-size:16px;border-radius:0;appearance:none;-webkit-appearance:none}
+.form select{background-image:linear-gradient(45deg,transparent 50%,var(--bone) 50%),linear-gradient(135deg,var(--bone) 50%,transparent 50%);background-position:calc(100% - 20px) 22px,calc(100% - 14px) 22px;background-size:6px 6px;background-repeat:no-repeat}
+.form select option{color:#191814}
+.form input:focus,.form select:focus{outline:2px solid var(--flare);outline-offset:2px}
+.ok{padding:28px 0;border-top:1px solid var(--bone-2);border-bottom:1px solid var(--bone-2)}
+.ok h3{font:400 30px/1.2 var(--serif);letter-spacing:-.01em}
+body[data-lang="zh"] .ok h3{font-weight:500}
+.ok p{margin-top:10px;color:var(--bone-2);max-width:46ch}
+@media (min-width:900px){.access-grid{grid-template-columns:6fr 5fr;gap:80px;align-items:start}}
+
+footer{background:#12110e;color:var(--bone-2);padding:48px 0 calc(40px + env(safe-area-inset-bottom))}
+footer .wm{color:var(--bone)}
+footer p{margin-top:12px;max-width:60ch;font-size:14px}
+footer .zh{color:var(--bone);font-family:var(--serif);font-size:18px;margin-top:14px}
+footer .small{font:400 11px/1.7 var(--mono);letter-spacing:.06em;margin-top:24px;padding-top:18px;border-top:1px solid var(--dk-rule)}
+
+/* overlays */
+.ovl{position:fixed;top:0;right:0;bottom:0;left:0;z-index:100;background:var(--paper);overflow:auto;display:none;padding-bottom:env(safe-area-inset-bottom)}
+.ovl.on{display:block}
+.ovl-hd{display:flex;align-items:center;justify-content:space-between;height:64px;border-bottom:1px solid var(--rule)}
+.ovl nav a{display:flex;align-items:baseline;justify-content:space-between;min-height:76px;padding:16px 0;border-bottom:1px solid var(--rule);font:400 clamp(28px,8vw,44px)/1.15 var(--serif);letter-spacing:-.02em}
+body[data-lang="zh"] .ovl nav a{font-weight:500;letter-spacing:0}
+.ovl nav a span{font:400 11px var(--mono);color:var(--mute)}
+.ovl .acts{display:grid;gap:12px;margin:28px 0 32px}
+.sign{padding:36px 0 48px;max-width:460px}
+.sign h2{font:400 36px/1.15 var(--serif);letter-spacing:-.02em}
+body[data-lang="zh"] .sign h2{font-weight:500}
+.sign .sub{color:var(--mute);margin:6px 0 26px;font-size:14px}
+.sign .form label{color:var(--bronze)}
+.sign .form input{border-color:var(--ink);color:var(--ink)}
+.sign .row{display:flex;justify-content:space-between;gap:12px;margin-top:8px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,16px);z-index:200;max-width:min(92vw,420px);background:var(--ink);color:var(--bone);padding:14px 20px;font:500 14px var(--sans);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+/* share */
+.fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;display:flex;align-items:center;gap:8px;min-height:48px;padding:0 20px 0 16px;background:var(--ink);color:var(--bone);font:700 13px var(--sans);letter-spacing:.05em;box-shadow:0 6px 24px rgba(25,24,20,.28)}
+body.ovl-open .fab{display:none}
+.shr{padding:28px 0 56px;max-width:520px}
+.shr h2{margin-top:14px;font-size:clamp(30px,8vw,44px)}
+.shr .lede{margin-top:12px;font-size:15px}
+.poster{display:block;width:100%;height:auto;margin-top:22px;border:1px solid var(--rule-2);background:var(--paper-2);-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
+.hintline{margin-top:12px;font:400 12px/1.6 var(--mono);color:var(--bronze)}
+.shr .acts{display:grid;gap:10px;margin-top:20px}
+.shr textarea{display:block;width:100%;min-height:132px;margin-top:16px;padding:12px 14px;border:1px solid var(--rule-2);background:var(--paper-2);font:400 13px/1.6 var(--mono);color:var(--ink-2);border-radius:0;resize:none}
+.wxo{position:fixed;top:0;right:0;bottom:0;left:0;z-index:300;background:rgba(12,11,9,.88);color:var(--bone);display:none;padding:20px}
+.wxo.on{display:block}
+.wxo svg{position:absolute;top:10px;right:18px}
+.wxo .tx{position:absolute;left:24px;right:24px;top:132px;text-align:right}
+.wxo h3{font:400 30px/1.25 var(--serif);letter-spacing:-.01em}
+.wxo p{margin-top:10px;color:var(--bone-2);font-size:15px}
+.wxo .btn{position:absolute;left:24px;right:24px;bottom:calc(32px + env(safe-area-inset-bottom))}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.001s!important}}
+</style>
+</head>
+<body data-lang="en">
+
+<header class="hd"><div class="wrap">
+  <a class="wm" href="#top" aria-label="GeniFlare">GENIFLARE</a>
+  <div class="hd-r">
+    <div class="lang" role="group" aria-label="Language"><button data-lang="en" class="on">EN</button><span>/</span><button data-lang="zh">中文</button></div>
+    <button class="req" data-act="access" id="hdReq" data-i="req">Request access</button>
+    <button class="menu" data-act="menu" data-i="menu">Menu</button>
+  </div>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+  <div class="eb" data-i="hero.eb"></div>
+  <h1 class="hs" data-i="hero.h"></h1>
+  <p class="lede" data-i="hero.p"></p>
+  <div class="cta"><a class="btn" href="#demo" data-i="hero.cta"></a><a class="lnk" href="#organ"><span data-i="hero.link"></span><span aria-hidden="true">↘</span></a></div>
+  <div class="pilot"><i></i><span data-i="hero.pilot"></span></div>
+</div></section>
+
+<section class="band" id="organ">
+  <div class="stage">
+    <canvas id="heroCv" aria-label="Digital organ"></canvas>
+    <span class="or s">S</span><span class="or i">I</span><span class="or l">L</span><span class="or r">R</span>
+    <span class="hint" data-i="drag"></span>
+    <div class="vmode" id="heroModes"></div>
+    <div class="legend"><span data-i="low"></span><i></i><span data-i="high"></span></div>
+  </div>
+  <div class="cap"><div class="wrap" data-i="cap"></div></div>
+</section>
+
+<section><div class="wrap"><ol class="seq">
+  <li><span class="n">01</span><span class="t" data-i="seq1"></span></li>
+  <li><span class="n">02</span><span class="t" data-i="seq2"></span></li>
+  <li><span class="n">03</span><span class="t" data-i="seq3"></span></li>
+</ol></div></section>
+
+<section class="sec"><div class="wrap">
+  <div class="eb" data-i="cat.eb"></div>
+  <h2 class="hs" data-i="cat.h"></h2>
+  <p class="lede" data-i="cat.p"></p>
+  <ol class="steps">
+    <li><span class="n">01</span><h3 data-i="c1.t"></h3><p data-i="c1.p"></p></li>
+    <li><span class="n">02</span><h3 data-i="c2.t"></h3><p data-i="c2.p"></p></li>
+    <li><span class="n">03</span><h3 data-i="c3.t"></h3><p data-i="c3.p"></p></li>
+  </ol>
+</div></section>
+
+<section class="sec" id="demo" style="padding-top:20px"><div class="wrap">
+  <div class="demo-hd">
+    <div class="eb" data-i="demo.eb"></div>
+    <h2 class="hs" data-i="demo.h"></h2>
+    <p class="lede" data-i="demo.p"></p>
+  </div>
+  <div class="card">
+    <div class="card-hd" id="cardHd"></div>
+    <div class="pf" id="pf" role="tablist"></div>
+    <div class="dm">
+      <div class="dm-l">
+        <div class="vp2"><canvas id="cardCv" aria-label="Digital organ"></canvas><span class="tag" id="cardTag"></span><span class="hint" data-i="drag"></span></div>
+        <div class="feats" id="feats"></div>
+      </div>
+      <div class="dm-r">
+        <div id="states"></div>
+        <div id="proj"></div>
+        <div class="sum" id="sum"></div>
+        <div class="note">
+          <label class="lbl" for="note" data-i="note.l"></label>
+          <textarea id="note" data-ph="note.ph"></textarea>
+          <button class="btn block" data-act="save" data-i="save"></button>
+        </div>
+      </div>
+    </div>
+    <p class="disc" data-i="disc"></p>
+  </div>
+</div></section>
+
+<section class="sec dark" id="trail"><div class="wrap">
+  <div class="eb" data-i="trail.eb"></div>
+  <h2 class="hs" data-i="trail.h"></h2>
+  <p class="lede" data-i="trail.p"></p>
+  <div class="trail-grid">
+    <ul class="cons" id="cons"></ul>
+    <div><div class="log-h"><span class="eb" style="color:var(--bone-2)" data-i="trail.log"></span><span id="logN"></span></div><ul class="log" id="log"></ul></div>
+  </div>
+</div></section>
+
+<section class="sec" id="roles"><div class="wrap">
+  <div class="eb" data-i="r.eb"></div>
+  <h2 class="hs" data-i="r.h"></h2>
+  <div class="roles">
+    <button class="role" data-role="doc"><span class="rt" data-i="r1.t"></span><span class="rp" data-i="r1.p"></span><span class="rl" data-i="r.see"></span></button>
+    <button class="role" data-role="res"><span class="rt" data-i="r2.t"></span><span class="rp" data-i="r2.p"></span><span class="rl" data-i="r.see"></span></button>
+    <button class="role" data-role="rd"><span class="rt" data-i="r3.t"></span><span class="rp" data-i="r3.p"></span><span class="rl" data-i="r.see"></span></button>
+  </div>
+</div></section>
+
+<section class="sec" id="workspaces" style="padding-top:0"><div class="wrap">
+  <div class="eb" data-i="ws.eb"></div>
+  <h2 class="hs" data-i="ws.h"></h2>
+  <p class="lede" data-i="ws.p"></p>
+  <div class="rchips" id="rchips"></div>
+  <ul class="wsl" id="wsl"></ul>
+</div></section>
+
+<section class="sec" style="padding-top:0"><div class="wrap">
+  <div class="eb" data-i="one.eb"></div>
+  <h2 class="hs" data-i="one.h"></h2>
+  <div class="one">
+    <div><h3 data-i="mob.t"></h3><p data-i="mob.p"></p></div>
+    <div><h3 data-i="pc.t"></h3><p data-i="pc.p"></p></div>
+  </div>
+  <p class="one-note" data-i="one.note"></p>
+</div></section>
+
+<section class="sec dark" id="access"><div class="wrap"><div class="access-grid">
+  <div>
+    <div class="eb" data-i="a.eb"></div>
+    <h2 class="hs" data-i="a.h"></h2>
+    <p class="lede" data-i="a.p"></p>
+  </div>
+  <div id="accessBox">
+    <form class="form" id="accessForm" novalidate>
+      <div><label for="an" data-i="a.name"></label><input id="an" type="text" autocomplete="name"></div>
+      <div><label for="ae" data-i="a.email"></label><input id="ae" type="email" inputmode="email" autocomplete="email"></div>
+      <div><label for="ar" data-i="a.role"></label><select id="ar"><option value="doc" data-i="o.doc"></option><option value="res" data-i="o.res"></option><option value="rd" data-i="o.rd"></option></select></div>
+      <div><label for="ai" data-i="a.inst"></label><input id="ai" type="text" autocomplete="organization"></div>
+      <button class="btn light block" type="submit" data-i="req"></button>
+    </form>
+  </div>
+</div></div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="wm">GENIFLARE</div>
+  <p data-i="f.tag"></p>
+  <p class="zh" data-i="f.zh"></p>
+  <p class="small" data-i="f.note"></p>
+</div></footer>
+
+<div class="ovl" id="menuOvl" role="dialog" aria-modal="true" aria-label="Menu"><div class="wrap">
+  <div class="ovl-hd"><span class="wm">GENIFLARE</span><button class="menu" data-act="close" data-i="close"></button></div>
+  <nav>
+    <a href="#organ" data-close><b style="font-weight:inherit" data-i="m.organ"></b><span>01</span></a>
+    <a href="#demo" data-close><b style="font-weight:inherit" data-i="m.demo"></b><span>02</span></a>
+    <a href="#trail" data-close><b style="font-weight:inherit" data-i="m.trail"></b><span>03</span></a>
+    <a href="#workspaces" data-close><b style="font-weight:inherit" data-i="m.ws"></b><span>04</span></a>
+    <a href="#access" data-close><b style="font-weight:inherit" data-i="m.access"></b><span>05</span></a>
+  </nav>
+  <div class="acts">
+    <button class="btn block" data-act="sign" data-i="signin"></button>
+    <button class="btn ghost block" data-act="share" data-i="share"></button>
+    <div class="lang" style="justify-content:center"><button data-lang="en">EN</button><span>/</span><button data-lang="zh">中文</button></div>
+  </div>
+</div></div>
+
+<div class="ovl" id="signOvl" role="dialog" aria-modal="true" aria-label="Sign in"><div class="wrap">
+  <div class="ovl-hd"><span class="wm">GENIFLARE</span><button class="menu" data-act="close" data-i="close"></button></div>
+  <div class="sign">
+    <div class="eb" data-i="s.eb"></div>
+    <h2 class="hs" style="margin-top:14px">GeniFlare Professional</h2>
+    <p class="sub">Digital Organ &amp; Medical Intelligence Platform</p>
+    <form class="form" id="signForm">
+      <div><label for="se" data-i="s.email"></label><input id="se" type="email" value="dr.li@example.org" inputmode="email" autocomplete="off"></div>
+      <div><label for="sp" data-i="s.pw"></label><input id="sp" type="password" value="demo-password" autocomplete="off"></div>
+      <button class="btn block" type="submit" data-i="s.in"></button>
+      <div class="row"><button type="button" class="lnk" data-act="forgot" data-i="s.forgot"></button><button type="button" class="lnk" data-act="reqfrom" data-i="s.req"></button></div>
+    </form>
+  </div>
+</div></div>
+
+<div class="ovl" id="shareOvl" role="dialog" aria-modal="true" aria-label="Share"><div class="wrap">
+  <div class="ovl-hd"><span class="wm">GENIFLARE</span><button class="menu" data-act="close" data-i="close"></button></div>
+  <div class="shr">
+    <div class="eb" data-i="sh.eb"></div>
+    <h2 class="hs" data-i="sh.h"></h2>
+    <p class="lede" data-i="sh.p"></p>
+    <img id="poster" class="poster" alt="GeniFlare share poster" width="750" height="1240">
+    <p class="hintline" id="posterHint"></p>
+    <div class="acts">
+      <button class="btn block" data-act="send" data-i="sh.send"></button>
+      <button class="btn ghost block" data-act="copylink" data-i="sh.link"></button>
+      <button class="btn ghost block" data-act="copytext" data-i="sh.text"></button>
+    </div>
+    <textarea id="shareMsg" readonly aria-label="Share message"></textarea>
+  </div>
+</div></div>
+
+<div class="wxo" id="wxo" data-act="wxclose" role="dialog" aria-modal="true">
+  <svg width="96" height="112" viewBox="0 0 96 112" fill="none" stroke="#ece6d6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 106C8 62 40 30 84 12"/><path d="M62 8l24 2-8 22"/></svg>
+  <div class="tx"><h3 data-i="wx.t"></h3><p data-i="wx.p"></p></div>
+  <button class="btn light block" data-act="wxclose" data-i="wx.ok"></button>
+</div>
+
+<button class="fab" data-act="share" aria-label="Share"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg><span data-i="share"></span></button>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+/* ================= i18n ================= */
+const L={
+en:{
+ req:'Request access',menu:'Menu',close:'Close',signin:'Sign in',
+ 'm.organ':'Digital organ','m.demo':'Demonstration','m.trail':'Audit trail','m.ws':'Workspaces','m.access':'Request access',
+ 'hero.eb':'Digital Organ & Medical Intelligence Platform','hero.h':'The organ, made computable.',
+ 'hero.p':'GeniFlare builds a Digital Organ for every patient and connects it to AI analysis, physicians, regenerative medicine and drug discovery — in one auditable workspace.',
+ 'hero.cta':'Open the demonstration','hero.link':'Meet a digital organ','hero.pilot':'Professional preview · fictional demo data',
+ drag:'Drag to rotate',low:'Low deviation',high:'High deviation',
+ cap:'Digital organ prototype / 01 · Illustrative model · Not a medical device',
+ seq1:'Digital organ',seq2:'AI analysis',seq3:'Physician decision',
+ 'cat.eb':'A different category','cat.h':'Not another patient record.',
+ 'cat.p':'Most systems store what happened. GeniFlare models what is changing, why it matters, and which treatment or research path deserves attention next.',
+ 'c1.t':'Model','c1.p':'Imaging, laboratory and clinical data are rebuilt into a Digital Organ with structural, functional and biological states.',
+ 'c2.t':'Analysis','c2.p':'AI separates the individual’s own trajectory from noise and explains what changed, with supporting evidence and the model version.',
+ 'c3.t':'Decision','c3.p':'The physician decides. Simulations compare drug, cell, EV, tissue and artificial-organ pathways — and every step is recorded.',
+ 'demo.eb':'Professional demonstration','demo.h':'See an organ change before you decide what to do.',
+ 'demo.p':'A representative profile from clinical practice. Change the pathway, intensity and horizon — the projection updates, and whatever you save enters the audit trail.',
+ conf:'Model confidence',idx:'index',vsBase:'vs. 6-month personal baseline',feat:'Key medical features',proj:'Projected trajectory',
+ path:'Pathway',inten:'Intensity',nat:'Natural course',withp:'With pathway',unc:'Uncertainty',now:'Now',d:'D',
+ 'ai.l':'AI analysis','note.l':'Physician assessment','note.ph':'Record your assessment of this projection…','save':'Save to audit trail',
+ disc:'Illustrative data only. AI output supports medical analysis and research; it does not replace a physician’s diagnosis or treatment decision.',
+ 'trail.eb':'Audit trail','trail.h':'Every access, analysis and decision leaves a record.',
+ 'trail.p':'Access to medical information and its use in research must rest on the corresponding consent, and remain traceable.','trail.log':'Records',
+ 'c.doc':'Physician access','c.doc.d':'Treating physicians may view the full medical record.','c.res':'Research use','c.res.d':'De-identified data may be used in approved research projects.','c.mod':'Model improvement','c.mod.d':'De-identified data may be used to improve organ models.',
+ 'ty.MODEL':'Model','ty.NOTE':'Physician','ty.SIM':'Simulation','ty.CONSENT':'Consent','ty.ACCESS':'Access',
+ 'r.eb':'Designed for professional work','r.h':'For people whose decisions depend on the organ.',
+ 'r1.t':'Physicians','r1.p':'Patients, Digital Organ, medical timeline, AI analysis, simulation, care plan and follow-up.',
+ 'r2.t':'Researchers','r2.p':'Research projects, digital-organ research data, mechanisms, targets, candidate therapies, experiments and clinical studies.',
+ 'r3.t':'R&D teams','r3.p':'Candidate drugs, personalized medicine, AI simulation, experimental validation, research assets and IP links.','r.see':'See their workspaces ↘',
+ 'ws.eb':'Workspaces','ws.h':'Ten workspaces. One core object.','ws.p':'Navigation follows the role: each person sees only the workspaces their permissions allow.',
+ 'role.all':'All','role.doc':'Physician','role.res':'Researcher','role.rd':'R&D team','notrole':'Not in this role',
+ 'one.eb':'One system','one.h':'One object across every screen.',
+ 'mob.t':'Mobile','mob.p':'Continuous personal use: state at a glance, AI information and a direct line to your physician.',
+ 'pc.t':'PC','pc.p':'Complex analysis, management, research and development for physicians, researchers and R&D teams.',
+ 'one.note':'Both clients share one account system, one Digital Organ model, one AI service and one audit log. There are never two incompatible data models.',
+ 'a.eb':'Professional access','a.h':'A workspace for organ-level medicine.','a.p':'Access is granted to physicians, researchers and R&D teams. Tell us who you are and we will follow up.',
+ 'a.name':'Name','a.email':'Work email','a.role':'Role','a.inst':'Institution','o.doc':'Physician','o.res':'Researcher','o.rd':'R&D team',
+ 'a.ok':'Request noted.','a.okp':'This is a demonstration: nothing was sent. In production our team replies within one business day.','a.bad':'Enter a valid work email',
+ 's.eb':'Professional sign-in','s.email':'Email','s.pw':'Password','s.in':'Sign In','s.forgot':'Forgot Password?','s.req':'Request Access',
+ 'f.tag':'Digital Organ & Medical Intelligence Platform','f.zh':'Connecting AI, physicians, regenerative medicine and drug discovery through the Digital Organ.',
+ 'f.note':'Fictional demonstration data. GeniFlare does not diagnose or replace clinical care.',
+ 'toast.saved':'Saved to the audit trail','toast.note':'Write an assessment first','toast.signed':'Signed in as Dr. Li (demo)','toast.forgot':'Demo: reset link sent','signedAs':'Dr. Li · signed in',
+ share:'Share','sh.eb':'Share this view','sh.h':'Send what you are looking at.',
+ 'sh.p':'The poster, link and message all reflect the current profile, pathway and horizon. Whoever opens the link lands on the same view.',
+ 'sh.hint':'Press and hold the image to send it to a friend or save it.',
+ 'sh.hintwx':'Press and hold the image → Send to Friend / Save. Or tap “···” at the top right to forward this page.',
+ 'sh.send':'Send to friends','sh.link':'Copy link','sh.text':'Copy share message',
+ 'wx.t':'Tap “···” at the top right','wx.p':'Choose “Send to Friend” or “Share to Moments”. The link card carries this view.','wx.ok':'Got it',
+ 'p.eb':'Digital Organ & Medical Intelligence','p.scan':'Scan to open the interactive demo','p.disc':'Fictional demo data · not a medical device','p.nolib':'Open this link',
+ 'toast.copied':'Copied','toast.manual':'Press and hold the text below to copy','toast.opened':'Shared view opened','toast.linkcopied':'Link copied — paste it into WeChat'
+},
+zh:{
+ req:'申请访问',menu:'菜单',close:'关闭',signin:'登录',
+ 'm.organ':'数字器官','m.demo':'专业演示','m.trail':'审计记录','m.ws':'工作区','m.access':'申请访问',
+ 'hero.eb':'数字器官与医学智能平台','hero.h':'让器官，成为可计算的医学对象。',
+ 'hero.p':'GeniFlare 为每位患者建立数字器官，把 AI 分析、医生判断、再生医学与新药研发连接在同一个可审计的工作台里。',
+ 'hero.cta':'进入专业演示','hero.link':'查看数字器官','hero.pilot':'专业版预览 · 示例数据均为虚构',
+ drag:'拖动旋转',low:'低偏离',high:'高偏离',
+ cap:'数字器官原型 / 01 · 示意模型 · 非医疗器械',
+ seq1:'数字器官',seq2:'AI 分析',seq3:'医生决策',
+ 'cat.eb':'不同的品类','cat.h':'不只是又一套病历系统。',
+ 'cat.p':'多数系统记录“发生过什么”。GeniFlare 建模的是：正在发生什么变化、为什么重要、下一步哪条治疗或研究路径值得关注。',
+ 'c1.t':'建模','c1.p':'把影像、检验与临床数据重建为数字器官，包含结构、功能与生物学三种状态。',
+ 'c2.t':'分析','c2.p':'AI 将个体自身的变化轨迹与噪声区分开，说明发生了什么变化，并附支持证据与模型版本。',
+ 'c3.t':'决策','c3.p':'由医生做出判断。模拟比较药物、细胞、外泌体、组织工程与人工器官等路径，每一步都有记录。',
+ 'demo.eb':'专业演示','demo.h':'先看清器官的变化，再决定怎么做。',
+ 'demo.p':'来自临床场景的示例档案。调整路径、强度与时间范围，预测随之更新；你保存的内容都会进入审计记录。',
+ conf:'模型置信度',idx:'指数',vsBase:'较 6 个月前的个人基线',feat:'关键医学特征',proj:'预测轨迹',
+ path:'研究路径',inten:'干预强度',nat:'自然进程',withp:'采用该路径',unc:'不确定性区间',now:'现在',d:'天',
+ 'ai.l':'AI 分析','note.l':'医生评估','note.ph':'记录你对该预测的评估……','save':'保存至审计记录',
+ disc:'仅为示例数据。AI 输出用于辅助医学分析和研究，不替代医生诊断或治疗决定。',
+ 'trail.eb':'审计记录','trail.h':'每一次访问、分析与决定，都留下记录。',
+ 'trail.p':'医学信息的访问和研究使用必须基于相应授权，并保留可追溯记录。','trail.log':'记录',
+ 'c.doc':'医生访问','c.doc.d':'主治医生可查看完整医学记录。','c.res':'研究授权','c.res.d':'去标识化数据可用于经批准的研究项目。','c.mod':'模型改进','c.mod.d':'去标识化数据可用于改进器官模型。',
+ 'ty.MODEL':'模型','ty.NOTE':'医生记录','ty.SIM':'模拟','ty.CONSENT':'授权','ty.ACCESS':'访问',
+ 'r.eb':'为专业工作而设计','r.h':'为决策依赖器官状态的专业人员。',
+ 'r1.t':'医生','r1.p':'患者管理、数字器官、医学时间轴、AI 分析、模拟、治疗计划与随访。',
+ 'r2.t':'研究人员','r2.p':'研究项目、数字器官研究数据、机制研究、靶点、候选疗法、实验与临床研究。',
+ 'r3.t':'研发团队','r3.p':'候选药物、个性化医学、AI 模拟、实验验证、研究资产与知识产权关联。','r.see':'查看对应工作区 ↘',
+ 'ws.eb':'工作区','ws.h':'十个工作区，一个核心对象。','ws.p':'导航随角色而变：每个人只看到权限允许的工作区。',
+ 'role.all':'全部','role.doc':'医生','role.res':'研究人员','role.rd':'研发团队','notrole':'该角色不可见',
+ 'one.eb':'同一套系统','one.h':'所有屏幕，同一个核心对象。',
+ 'mob.t':'移动端','mob.p':'面向个人的持续使用：状态一目了然、AI 信息，以及与医生的连接。',
+ 'pc.t':'PC 端','pc.p':'面向医生、研究人员与研发团队的复杂分析、管理、研究与研发。',
+ 'one.note':'两端共用同一套账户体系、数字器官模型、AI 服务与审计日志，不会出现两套互不兼容的数据模型。',
+ 'a.eb':'专业版访问','a.h':'面向器官级医学的工作台。','a.p':'专业版面向医生、研究人员与研发团队。告诉我们你是谁，我们会与你联系。',
+ 'a.name':'姓名','a.email':'工作邮箱','a.role':'角色','a.inst':'所在机构','o.doc':'医生','o.res':'研究人员','o.rd':'研发团队',
+ 'a.ok':'已记录你的申请。','a.okp':'这是演示环境：没有实际发送任何内容。正式环境中，团队会在一个工作日内回复。','a.bad':'请输入有效的工作邮箱',
+ 's.eb':'专业版登录','s.email':'邮箱','s.pw':'密码','s.in':'登录','s.forgot':'忘记密码？','s.req':'申请访问',
+ 'f.tag':'Digital Organ & Medical Intelligence Platform','f.zh':'用数字器官连接 AI、医生、再生医学与新药研发。',
+ 'f.note':'示例数据均为虚构。GeniFlare 不做诊断，也不替代临床诊疗。',
+ 'toast.saved':'已保存至审计记录','toast.note':'请先填写医生评估','toast.signed':'已以李医生身份登录（演示）','toast.forgot':'演示：重置链接已发送','signedAs':'李医生 · 已登录',
+ share:'分享','sh.eb':'分享当前视图','sh.h':'把你正在看的内容发出去。',
+ 'sh.p':'海报、链接和文案都对应你当前选择的档案、路径与时间范围。对方打开链接，会看到同一个视图。',
+ 'sh.hint':'长按图片，可发送给朋友或保存到相册。',
+ 'sh.hintwx':'长按图片 → 发送给朋友 / 保存图片；也可点右上角「···」直接转发本页。',
+ 'sh.send':'发送给朋友','sh.link':'复制链接','sh.text':'复制分享文案',
+ 'wx.t':'点击右上角「···」','wx.p':'选择「发送给朋友」或「分享到朋友圈」，链接卡片会带上当前视图。','wx.ok':'知道了',
+ 'p.eb':'数字器官与医学智能平台','p.scan':'长按识别二维码，打开互动演示','p.disc':'示例数据 · 非医疗器械','p.nolib':'请打开链接',
+ 'toast.copied':'已复制','toast.manual':'请长按下方文字手动复制','toast.opened':'已打开分享的视图','toast.linkcopied':'链接已复制，可粘贴到微信'
+}};
+let lang=(()=>{try{const s=localStorage.getItem('gf-lang');if(s==='en'||s==='zh')return s;}catch(e){}return(navigator.language||'').toLowerCase().startsWith('zh')?'zh':'en';})();
+const t=k=>(L[lang][k]!==undefined?L[lang][k]:(L.en[k]!==undefined?L.en[k]:k)), tx=o=>o[lang];
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), pad=n=>String(n).padStart(2,'0');
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ================= data (fictional) ================= */
+const ST={s:{en:'Structure',zh:'结构状态'},f:{en:'Function',zh:'功能状态'},b:{en:'Biology',zh:'生物学状态'}};
+const ORG={heart:{n:{en:'Heart',zh:'心脏'},ver:'GF-Heart v3.2.1'},kidney:{n:{en:'Kidney',zh:'肾脏'},ver:'GF-Kidney v2.4.0'},liver:{n:{en:'Liver',zh:'肝脏'},ver:'GF-Liver v2.1.3'}};
+const PR=[
+ {id:'GF-20418',organ:'heart',conf:86,seed:3,start:{s:74,f:67,b:68},idx:{s:72,f:58,b:64},
+  feats:[['LVEF',{en:'Ejection fraction',zh:'射血分数'},'38','%'],['GLS',{en:'Longitudinal strain',zh:'纵向应变'},'−11.2','%'],['NT-proBNP',{en:'Natriuretic peptide',zh:'脑钠肽前体'},'1240','pg/mL']],
+  sum:{en:'Over six months the functional index fell from 67 to 58, driven mainly by reduced anterior-wall and apical motion. The decline has accelerated over the last eight weeks; structure has changed little.',zh:'近 6 个月功能状态指数由 67 降至 58，主要由前壁与心尖区域运动减弱驱动；最近 8 周下降加快，结构变化较小。'}},
+ {id:'GF-20377',organ:'kidney',conf:82,seed:5,start:{s:70,f:66,b:65},idx:{s:71,f:67,b:66},
+  feats:[['eGFR',{en:'Filtration rate',zh:'滤过率'},'68','mL/min'],['UACR',{en:'Urinary albumin',zh:'尿白蛋白/肌酐'},'38','mg/g'],['Cortex',{en:'Cortical thickness',zh:'皮质厚度'},'11','mm']],
+  sum:{en:'Function is broadly stable. A mild rise in urinary albumin is the one signal worth tracking at the next follow-up.',zh:'整体功能保持稳定。尿白蛋白轻度上升，是下次随访唯一值得跟踪的信号。'}},
+ {id:'GF-20352',organ:'liver',conf:79,seed:8,start:{s:68,f:70,b:62},idx:{s:61,f:66,b:57},
+  feats:[['LSM',{en:'Liver stiffness',zh:'肝脏硬度'},'12.4','kPa'],['ALT',{en:'Alanine aminotransferase',zh:'丙氨酸转氨酶'},'58','U/L'],['PDFF',{en:'Fat fraction',zh:'肝脂肪分数'},'14','%']],
+  sum:{en:'Structural state has shifted: stiffness and enzymes are up while platelets trend down — in this example, consistent with progressing fibrosis.',zh:'结构状态发生变化：肝脏硬度与转氨酶上升、血小板下降——在本示例中提示纤维化进展。'}}
+];
+const PATHS={
+ drug:{n:{en:'Drug intervention',zh:'药物干预'},g:{s:.03,f:.09,b:.12},u:.5},
+ cell:{n:{en:'Cell therapy',zh:'细胞疗法'},g:{s:.08,f:.12,b:.10},u:.8},
+ ev:{n:{en:'EV / Exosome',zh:'EV / 外泌体'},g:{s:.04,f:.06,b:.09},u:.7},
+ tissue:{n:{en:'Tissue engineering',zh:'组织工程'},g:{s:.11,f:.08,b:.05},u:.9},
+ art:{n:{en:'Artificial organ',zh:'人工器官'},g:{s:.02,f:.16,b:.02},u:.6}
+};
+const INT=[{n:{en:'Low',zh:'低'},e:.45},{n:{en:'Medium',zh:'中'},e:.7},{n:{en:'High',zh:'高'},e:.95}];
+const WS=[
+ {k:'dashboard',en:'Dashboard',zh:'工作台',r:['doc','res','rd'],d:{en:'Today’s work: patient updates, digital organ updates, AI analysis updates, follow-up tasks, research projects and the latest medical evidence.',zh:'今日工作：患者更新、数字器官更新、AI 分析更新、随访任务、研究项目与最新医学证据。'}},
+ {k:'patients',en:'Patients',zh:'患者',r:['doc'],d:{en:'Patient list with search, recent updates, cases needing physician attention, organ status and recent medical events.',zh:'患者列表：搜索、最近更新、需要医生关注、数字器官状态与最近医学事件。'}},
+ {k:'organs',en:'Digital Organs',zh:'数字器官',r:['doc','res','rd'],d:{en:'Current structural, functional and biological state; related features, time series, treatment history, AI analysis, simulation results, physician assessment and model version.',zh:'器官当前的结构、功能与生物学状态；相关医学特征、时间序列、治疗历史、AI 分析、模拟结果、医生评估与模型版本。'}},
+ {k:'ai',en:'AI Analysis',zh:'AI 分析',r:['doc','res'],d:{en:'Current state, trend, key changes, related factors, summary, supporting evidence, model version and generation time.',zh:'当前状态、变化趋势、关键变化、相关因素、分析摘要、支持证据、模型版本与生成时间。'}},
+ {k:'sim',en:'Simulation',zh:'模拟',r:['doc','res','rd'],d:{en:'Choose a research path — drug, cell therapy, EV / exosome, tissue engineering, artificial organ — set conditions, review outcomes, uncertainty and limits, then save.',zh:'选择研究路径——药物、细胞疗法、EV / 外泌体、组织工程、人工器官——设定条件，查看结果、不确定性与限制，然后保存。'}},
+ {k:'physician',en:'Physician',zh:'医生工作台',r:['doc'],d:{en:'Assessment, care plan, follow-up and patient consent in one workspace. The physician makes the medical judgement.',zh:'医学评估、治疗计划、随访与患者授权集于一处。医学判断由医生做出。'}},
+ {k:'research',en:'Research',zh:'研究',r:['res','rd'],d:{en:'Projects, subjects, digital-organ data, biological features, mechanism studies, hypotheses, candidate therapies, experiments and clinical studies.',zh:'研究项目、研究对象、数字器官数据、生物学特征、机制研究、研究假设、候选疗法、实验与临床研究。'}},
+ {k:'drug',en:'Drug Discovery',zh:'新药研发',r:['res','rd'],d:{en:'Personalized drug discovery from an individual’s Digital Organ, and AI drug discovery: targets, molecules, combinations, cell therapy, EV, tissue engineering, artificial organs.',zh:'从个人数字器官出发的个性化制药，以及 AI 新药研发：靶点、分子、药物组合、细胞疗法、外泌体、组织工程、人工器官。'}},
+ {k:'evidence',en:'Evidence',zh:'医学证据',r:['doc','res','rd'],d:{en:'Sources, time, physician records, AI analyses, model versions, simulation results, treatment, experiment and clinical results, consent and audit.',zh:'来源、时间、医生记录、AI 分析、模型版本、模拟结果、治疗、实验与临床结果、授权与审计。'}},
+ {k:'settings',en:'Settings',zh:'授权与安全',r:['doc','res','rd'],d:{en:'Patient consent, physician and research access, data-use records, access logs, audit and account security.',zh:'患者授权、医生与研究访问、数据使用记录、访问日志、操作审计与账户安全。'}}
+];
+const RL={doc:'DOC',res:'RES',rd:'R&D'};
+
+/* ================= state ================= */
+const D={pi:0,st:'f',path:'drug',hz:90,inten:1};
+const CONSENT={doc:true,res:true,mod:false};
+const TRAIL=[
+ {ty:'MODEL',t:'2026-09-16 14:32',en:'Digital organ GF-Heart v3.2.1 rebuilt from ultrasound and MRI',zh:'数字器官 GF-Heart v3.2.1 已由超声与 MRI 重建'},
+ {ty:'CONSENT',t:'2026-08-30 10:12',en:'Research use granted for project GF-RS-0007 (de-identified)',zh:'已授予研究使用：项目 GF-RS-0007（去标识化）'},
+ {ty:'NOTE',t:'2026-08-28 09:40',en:'Physician assessment recorded: adjust medication, review in two weeks',zh:'医生评估已记录：调整用药，两周后复查'}
+];
+let roleF='all',wsOpen=null,signed=false,HERO=null,CARD=null,toastT;
+const nowT=()=>{const d=new Date();return '2026-09-19 '+pad(d.getHours())+':'+pad(d.getMinutes());};
+function logT(ty,en,zh){TRAIL.unshift({ty,t:nowT(),en,zh});renderTrail();}
+function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('on'),2600);}
+
+/* ================= organ point cloud ================= */
+function rng(seed){let a=seed>>>0;return()=>{a=(a+0x6D2B79F5)>>>0;let x=a;x=Math.imul(x^x>>>15,x|1);x^=x+Math.imul(x^x>>>7,x|61);return((x^x>>>14)>>>0)/4294967296;};}
+function samples(kind,n){
+  const r=rng(kind==='heart'?7:kind==='kidney'?11:13),a=new Float32Array(n*3);let i=0,g=0;
+  if(kind==='heart'){
+    while(i<n&&g<600000){g++;
+      const x=(r()*2-1)*1.3,y=(r()*2-1)*.75,z=r()*2.5-1.2,q=x*x+2.25*y*y+z*z-1,f=q*q*q-x*x*z*z*z-.1125*y*y*z*z*z;
+      if(f<0&&f>-.2){a[3*i]=x/1.25;a[3*i+1]=(z-.12)/1.25;a[3*i+2]=y*1.4/1.25;i++;}
+    }
+  }else{
+    while(i<n){
+      const u=r()*Math.PI*2,c=r()*2-1,s=Math.sqrt(1-c*c);let x=s*Math.cos(u),y=c,z=s*Math.sin(u);
+      const k=r()<.82?.94+.06*r():Math.cbrt(r());
+      if(kind==='kidney'){let X=.62*x,Y=1.05*y,Z=.5*z;X+=.42*y*y-.2;if(X>-.05)X-=.42*Math.exp(-Y*Y/.06)*clamp(x,0,1);x=X;y=Y;z=Z;}
+      else{const tz=.4+.6*Math.pow(clamp(1-(x+1)/2,0,1),.7);x=1.25*x;y=.7*y*(.8+.2*tz);z=.55*z*tz;y+=.12*Math.sin(x*2.2);x*=.95;}
+      a[3*i]=x*k;a[3*i+1]=y*k;a[3*i+2]=z*k;i++;
+    }
+  }
+  while(i<n){a[3*i]=a[3*(i-1)];a[3*i+1]=a[3*(i-1)+1];a[3*i+2]=a[3*(i-1)+2];i++;}
+  return a;
+}
+function heat(pts,seed,mode,amp){
+  const n=pts.length/3,H=new Float32Array(n),c=[Math.sin(seed*1.7+mode*2.1)*.8,.7*Math.cos(seed*2.3+mode*1.3),Math.sin(seed*3.1+mode)*.6];
+  for(let k=0;k<n;k++){const x=pts[3*k],y=pts[3*k+1],z=pts[3*k+2],d=(x-c[0])**2+(y-c[1])**2+(z-c[2])**2,gs=Math.exp(-d/.32),nz=.5+.5*Math.sin(x*4.1+seed+mode)*Math.cos(y*3.7-seed*.7)*Math.sin(z*3.3+mode);H[k]=clamp(.14+amp*gs+.22*nz,0,1);}
+  return H;
+}
+const STOPS=[[0,[38,78,72]],[.35,[104,146,126]],[.6,[214,198,160]],[.8,[232,140,66]],[1,[255,214,140]]];
+const LUT=Array.from({length:64},(_,i)=>{const q=i/63;let a=STOPS[0],b=STOPS[4];for(let k=0;k<4;k++)if(q>=STOPS[k][0]&&q<=STOPS[k+1][0]){a=STOPS[k];b=STOPS[k+1];break;}const u=(q-a[0])/(b[0]-a[0]||1);return `rgb(${a[1].map((v,j)=>Math.round(v+(b[1][j]-v)*u)).join(',')})`;});
+function mountOrgan(cv,kind,seed,idx,opt={}){
+  const N=opt.n||2000,pts=samples(kind,N),H=[0,1,2].map(m=>heat(pts,seed,m,.35+(100-idx['sfb'[m]])/60));
+  const ctx=cv.getContext('2d');let mode=opt.mode||0,yaw=opt.yaw||.6,vel=RM?0:.004,drag=false,lx=0,raf=0,W=1,Hh=1,vis=true,dpr=1,t0=performance.now();
+  const size=()=>{const b=cv.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);W=Math.max(1,b.width*dpr);Hh=Math.max(1,b.height*dpr);cv.width=W;cv.height=Hh;};
+  function frame(now){
+    raf=requestAnimationFrame(frame);if(!vis)return;
+    if(!drag){yaw+=vel;vel+=((RM?0:.004)-vel)*.03;}
+    const pulse=kind==='heart'&&!RM?1+.02*Math.sin((now-t0)/1000*Math.PI*1.6):1;
+    ctx.clearRect(0,0,W,Hh);ctx.globalCompositeOperation='source-over';
+    const cx=W/2,cy=Hh/2+(opt.dy||0)*Hh,sc=Math.min(W,Hh)*(opt.zoom||.34)*pulse,cyw=Math.cos(yaw),sy=Math.sin(yaw),ct=Math.cos(.28),st=Math.sin(.28),h=H[mode],base=Math.max(1,Math.min(W,Hh)/330);
+    for(let k=0;k<N;k++){
+      const x=pts[3*k],y=pts[3*k+1],z=pts[3*k+2],x1=x*cyw+z*sy,z1=-x*sy+z*cyw,y1=y*ct-z1*st,z2=y*st+z1*ct,p=1/(1+z2*.32),dep=clamp(.5-z2*.5,0,1);
+      ctx.globalAlpha=.28+.62*dep;ctx.fillStyle=LUT[(h[k]*63)|0];
+      ctx.beginPath();ctx.arc(cx+x1*sc*p,cy-y1*sc*p,(.7+1.2*dep)*base*dpr*.9,0,6.2832);ctx.fill();
+    }
+    ctx.globalAlpha=1;
+  }
+  const ro=new ResizeObserver(size);ro.observe(cv);size();
+  const io=new IntersectionObserver(e=>{vis=e[0].isIntersecting;});io.observe(cv);
+  cv.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;try{cv.setPointerCapture(e.pointerId);}catch(_){}});
+  cv.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-lx;lx=e.clientX;yaw+=dx*.011;vel=dx*.0008;});
+  const up=()=>{drag=false;};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+  raf=requestAnimationFrame(frame);
+  return{setMode(m){mode=m;},destroy(){cancelAnimationFrame(raf);ro.disconnect();io.disconnect();}};
+}
+
+/* ================= projection ================= */
+function project(){
+  const p=PR[D.pi],k=D.st,cur=p.idx[k],slope=(cur-p.start[k])/6,P0=PATHS[D.path],eff=INT[D.inten].e;
+  const dT=P0.g[k]*100*eff*(.5+(100-cur)/60),uT=P0.u*(1.2+2.6*(1-eff))*(.6+P0.g[k]*5);
+  return [0,30,60,90].map(d=>{const h=d/90,nat=clamp(cur+slope*d/30,0,100),gain=dT*Math.pow(h,.8),u=d?uT*(.25+.75*h):0;return{d,nat,pw:clamp(nat+gain,0,100),u};});
+}
+const f1=v=>(Math.round(v*10)/10).toFixed(1).replace(/\.0$/,'');
+function chartSvg(pts){
+  const W=320,H=196,Lm=32,Rm=16,Tm=22,Bm=26,vals=pts.flatMap(q=>[q.nat,q.pw-q.u,q.pw+q.u]);
+  let mn=Math.max(0,Math.floor((Math.min(...vals)-3)/5)*5),mx=Math.min(100,Math.ceil((Math.max(...vals)+3)/5)*5);
+  if(mx-mn<10)mx=mn+10;
+  const X=d=>Lm+(W-Lm-Rm)*d/90,Y=v=>Tm+(H-Tm-Bm)*(1-(v-mn)/(mx-mn)),step=(mx-mn)>25?10:5;
+  let g='';for(let v=Math.ceil(mn/step)*step;v<=mx;v+=step)g+=`<line class="g" x1="${Lm}" x2="${W-Rm}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${Lm-6}" y="${Y(v)+3}" text-anchor="end">${v}</text>`;
+  [0,30,60,90].forEach(d=>{g+=`<text x="${X(d)}" y="${H-8}" text-anchor="${d===0?'start':d===90?'end':'middle'}">${d===0?t('now'):d+(lang==='zh'?' 天':'D')}</text>`;});
+  const up=pts.map(q=>`${X(q.d)},${Y(q.pw+q.u)}`),lo=pts.slice().reverse().map(q=>`${X(q.d)},${Y(q.pw-q.u)}`);
+  const path=k=>pts.map((q,i)=>(i?'L':'M')+X(q.d).toFixed(1)+' '+Y(q[k]).toFixed(1)).join(' ');
+  const s=pts.find(q=>q.d===D.hz),sx=X(s.d);
+  return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(t('proj'))}">${g}
+   <polygon points="${up.concat(lo).join(' ')}" fill="rgba(31,107,92,.16)"/>
+   <path d="${path('nat')}" fill="none" stroke="#55524a" stroke-width="1.6" stroke-dasharray="4 4"/>
+   <path d="${path('pw')}" fill="none" stroke="#1f6b5c" stroke-width="2.4" stroke-linejoin="round"/>
+   <line x1="${sx}" x2="${sx}" y1="${Tm-6}" y2="${H-Bm}" stroke="#191814" stroke-width="1" stroke-dasharray="2 3"/>
+   <circle cx="${sx}" cy="${Y(s.pw)}" r="4" fill="#1f6b5c"/><circle cx="${sx}" cy="${Y(s.nat)}" r="3.4" fill="#f7f4ec" stroke="#55524a" stroke-width="1.6"/>
+   <text class="lb" x="${clamp(sx,26,W-26)}" y="${Y(s.pw+s.u)-6}" text-anchor="middle" style="fill:#1f6b5c;font-weight:500">${f1(s.pw)}</text>
+   <text class="lb" x="${clamp(sx,26,W-26)}" y="${Y(s.nat)+15}" text-anchor="middle" style="fill:#55524a">${f1(s.nat)}</text></svg>`;
+}
+
+/* ================= renderers ================= */
+function renderHeroModes(){
+  const m=HERO?HERO.mode:1;
+  $('#heroModes').innerHTML=['s','f','b'].map((k,i)=>`<button data-hm="${i}" class="${i===heroMode?'on':''}">${tx(ST[k])}</button>`).join('');
+}
+let heroMode=1;
+function renderHead(){
+  const p=PR[D.pi];
+  $('#cardHd').innerHTML=`<span>GENIFLARE / ${p.id}</span><span>${t('conf')} ${p.conf}%</span>`;
+  $('#pf').innerHTML=PR.map((q,i)=>`<button role="tab" aria-selected="${i===D.pi}" class="${i===D.pi?'on':''}" data-pf="${i}">${tx(ORG[q.organ].n)}</button>`).join('');
+  $('#cardTag').textContent=ORG[p.organ].ver;
+  $('#feats').innerHTML=`<h4>${t('feat')}</h4>`+p.feats.map(f=>`<div class="ft"><span>${tx(f[1])}</span><span><b>${f[2]}</b><small>${f[0]===f[1].en?'':''}${f[3]}</small></span></div>`).join('');
+}
+function renderStates(){
+  const p=PR[D.pi],k=D.st,cur=p.idx[k],d=cur-p.start[k],cls=d<0?'dn':'up';
+  $('#states').innerHTML=`<div class="lbl">${tx(ST[k])} · ${t('idx')}</div>
+   <div class="big"><span class="num">${cur}</span><span class="of">/100</span></div>
+   <div class="dlt ${cls}">${d<0?'↓':'↑'} ${Math.abs(d)} <span>${t('vsBase')}</span></div>
+   <div class="srows">${['s','f','b'].map(q=>{const dd=p.idx[q]-p.start[q];return `<button class="srow ${q===k?'on':''}" data-st="${q}" aria-pressed="${q===k}"><span>${tx(ST[q])}</span><span class="mono">${p.idx[q]}</span><span class="mono ${dd<0?'dn':'up'}">${dd<0?'−':'+'}${Math.abs(dd)}</span></button>`;}).join('')}</div>`;
+  $('#sum').innerHTML=`<div class="lbl">${t('ai.l')}</div><p>${tx(p.sum)}</p>`;
+}
+function resSentence(bold){
+  const pts=project(),s=pts.find(q=>q.d===D.hz),P0=PATHS[D.path],k=D.st,b=v=>bold?'<b>'+v+'</b>':v;
+  return lang==='zh'
+    ?`${D.hz} 天后，采用${tx(P0.n)}（强度：${tx(INT[D.inten].n)}），${tx(ST[k])}指数预计为 ${b(f1(s.pw))}（±${f1(s.u)}）；自然进程为 ${b(f1(s.nat))}。`
+    :`At ${D.hz} days, with ${tx(P0.n).toLowerCase()} (${tx(INT[D.inten].n).toLowerCase()} intensity), the ${tx(ST[k]).toLowerCase()} index is projected at ${b(f1(s.pw))} (±${f1(s.u)}), against ${b(f1(s.nat))} on the natural course.`;
+}
+function renderProj(){
+  const pts=project();
+  const text=resSentence(true);
+  $('#proj').innerHTML=`<div class="ph"><span class="lbl">${t('proj')}</span><div class="seg" role="group">${[30,60,90].map(h=>`<button class="${h===D.hz?'on':''}" data-hz="${h}">${h}${lang==='zh'?' 天':'D'}</button>`).join('')}</div></div>
+   ${chartSvg(pts)}
+   <div class="lgd"><span><i></i>${t('withp')}</span><span><i class="d"></i>${t('nat')}</span><span><i class="b"></i>${t('unc')}</span></div>
+   <div class="ph" style="margin-top:22px;margin-bottom:0"><span class="lbl">${t('path')}</span></div>
+   <div class="pchips">${Object.entries(PATHS).map(([q,v])=>`<button class="${q===D.path?'on':''}" data-path="${q}">${tx(v.n)}</button>`).join('')}</div>
+   <div class="row2"><span class="lbl">${t('inten')}</span><div class="seg" role="group">${INT.map((v,i)=>`<button class="${i===D.inten?'on':''}" data-int="${i}">${tx(v.n)}</button>`).join('')}</div></div>
+   <p class="res">${text}</p>`;
+  syncShare();
+}
+function renderTrail(){
+  $('#cons').innerHTML=[['doc','c.doc'],['res','c.res'],['mod','c.mod']].map(([k,n])=>`<li><div><b>${t(n)}</b><small>${t(n+'.d')}</small></div><button class="sw ${CONSENT[k]?'on':''}" data-cons="${k}" role="switch" aria-checked="${CONSENT[k]}" aria-label="${esc(t(n))}"></button></li>`).join('');
+  $('#log').innerHTML=TRAIL.slice(0,8).map(e=>`<li><span class="ty">${t('ty.'+e.ty)}</span><span class="tm">${e.t}</span><span class="tt">${esc(e[lang])}</span></li>`).join('');
+  $('#logN').textContent=TRAIL.length+(lang==='zh'?' 条':' entries');
+}
+function renderWS(){
+  $('#rchips').innerHTML=['all','doc','res','rd'].map(r=>`<button class="${r===roleF?'on':''}" data-rf="${r}">${t('role.'+r)}</button>`).join('');
+  $('#wsl').innerHTML=WS.map(w=>{const ok=roleF==='all'||w.r.includes(roleF),open=wsOpen===w.k;
+    return `<li class="wsr ${ok?'':'dim'}"><button data-ws="${w.k}" aria-expanded="${open}"><span class="nm">${w.en}<small>${w.zh}</small></span><span class="tg">${w.r.map(r=>RL[r]).join(' · ')}<i>${open?'−':'+'}</i></span></button>${open?`<div class="bd">${tx(w.d)}${ok?'':`<em>${t('notrole')}</em>`}</div>`:''}</li>`;}).join('');
+}
+function renderHdr(){
+  $('#hdReq').textContent=signed?t('signedAs'):t('req');
+}
+
+/* ================= language ================= */
+function applyLang(){
+  document.documentElement.lang=lang==='zh'?'zh-CN':'en';document.body.dataset.lang=lang;
+  $$('[data-i]').forEach(e=>{e.textContent=t(e.dataset.i);});
+  $$('[data-ph]').forEach(e=>{e.placeholder=t(e.dataset.ph);});
+  $$('[data-lang]').forEach(b=>{if(b.tagName==='BUTTON')b.classList.toggle('on',b.dataset.lang===lang);});
+  renderHeroModes();renderHead();renderStates();renderProj();renderTrail();renderWS();renderHdr();
+}
+function mountCard(){
+  if(CARD)CARD.destroy();
+  const p=PR[D.pi];CARD=mountOrgan($('#cardCv'),p.organ,p.seed,p.idx,{mode:{s:0,f:1,b:2}[D.st],n:1800,zoom:.33});
+}
+
+/* ================= share (WeChat-friendly) ================= */
+const IS_WX=/MicroMessenger/i.test(navigator.userAgent)||/[?&]wx=1/.test(location.search);
+/* 部署到公网后填入完整地址（如 https://example.cn/geniflare/index.html）；留空则使用当前页面地址。
+   分享链接、海报二维码、微信转发卡片的链接都用它。 */
+const PUBLIC_URL='';
+/* 可选：微信转发卡片（标题/摘要/缩略图）需要 JS-SDK。填入你服务端的签名接口
+   （返回 {appId,timestamp,nonceStr,signature}；需已备案域名 + 已认证的公众号/服务号）。留空则不启用。 */
+const WX_SIGN_ENDPOINT='';
+let touched=false,WX_READY=false;
+function baseUrl(){return (PUBLIC_URL||location.href).split('#')[0].replace(/([?&])wx=1(&|$)/,function(m,a,b){return b?a:'';}).replace(/[?&]$/,'');}
+function stateHash(){return '#pf='+D.pi+'&st='+D.st+'&pa='+D.path+'&in='+D.inten+'&hz='+D.hz+'&l='+lang;}
+function shareUrl(){return baseUrl()+stateHash();}
+function readHash(){
+  const h=location.hash.replace(/^#/,'');if(h.indexOf('pf=')<0)return false;
+  const o={};h.split('&').forEach(function(s){const a=s.split('=');o[a[0]]=a[1];});
+  if(o.pf!==undefined&&+o.pf>=0&&+o.pf<PR.length)D.pi=+o.pf|0;
+  if(o.st&&ST[o.st])D.st=o.st;
+  if(o.pa&&PATHS[o.pa])D.path=o.pa;
+  if(o.in!==undefined&&INT[+o.in])D.inten=+o.in;
+  if([30,60,90].indexOf(+o.hz)>=0)D.hz=+o.hz;
+  if(o.l==='en'||o.l==='zh')lang=o.l;
+  return true;
+}
+function shareInfo(){const p=PR[D.pi],k=D.st,cur=p.idx[k],s=project().find(q=>q.d===D.hz);return{p:p,k:k,cur:cur,d:cur-p.start[k],s:s,P0:PATHS[D.path],organ:tx(ORG[p.organ].n),state:tx(ST[k])};}
+function shareTitle(){const i=shareInfo();return lang==='zh'?`GeniFlare 数字器官演示 · ${i.organ}${i.state} ${i.cur}/100`:`GeniFlare digital organ · ${i.organ} ${i.state.toLowerCase()} ${i.cur}/100`;}
+function shareDesc(){const i=shareInfo();return lang==='zh'
+  ?`${tx(i.P0.n)}（强度${tx(INT[D.inten].n)}）${D.hz} 天预测 ${f1(i.s.pw)}，自然进程 ${f1(i.s.nat)}。示例数据，仅供演示。`
+  :`${tx(i.P0.n)} (${tx(INT[D.inten].n).toLowerCase()} intensity), ${D.hz}-day projection ${f1(i.s.pw)} vs ${f1(i.s.nat)} natural course. Fictional data, demo only.`;}
+function shareText(){return '【'+shareTitle()+'】\n'+shareDesc()+'\n'+shareUrl();}
+function pushWx(){
+  if(!WX_READY||typeof wx==='undefined')return;
+  const img=new URL('share-cover.png',baseUrl()).href,data={title:shareTitle(),desc:shareDesc(),link:shareUrl(),imgUrl:img};
+  wx.updateAppMessageShareData(data);wx.updateTimelineShareData({title:data.title,link:data.link,imgUrl:img});
+}
+function initWx(){
+  if(!IS_WX||!WX_SIGN_ENDPOINT)return;
+  const s=document.createElement('script');s.src='https://res.wx.qq.com/open/js/jweixin-1.6.0.js';
+  s.onload=function(){fetch(WX_SIGN_ENDPOINT+encodeURIComponent(location.href.split('#')[0])).then(function(r){return r.json();}).then(function(c){
+    wx.config({debug:false,appId:c.appId,timestamp:c.timestamp,nonceStr:c.nonceStr,signature:c.signature,jsApiList:['updateAppMessageShareData','updateTimelineShareData']});
+    wx.ready(function(){WX_READY=true;pushWx();});}).catch(function(){});};
+  document.head.appendChild(s);
+}
+function syncShare(){if(touched){try{history.replaceState(null,'',stateHash());}catch(e){}}pushWx();}
+function copy(text,okKey){
+  const ok=function(){toast(t(okKey||'toast.copied'));};
+  const fb=function(){
+    const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;top:0;left:0;opacity:0;font-size:16px';
+    document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,text.length);let done=false;
+    try{done=document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);if(done)ok();else{toast(t('toast.manual'));const m=$('#shareMsg');m.focus();m.select();}
+  };
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(text).then(ok,fb);else fb();
+}
+
+/* ---- poster (canvas → PNG, long-press in WeChat to send / save) ---- */
+function cssVar(n){return getComputedStyle(document.body).getPropertyValue(n).trim();}
+function spaced(c,text,x,y,sp,align){
+  const ch=Array.from(text);let w=-sp;ch.forEach(function(g){w+=c.measureText(g).width+sp;});
+  let x0=align==='right'?x-w:x;ch.forEach(function(g){c.fillText(g,x0,y);x0+=c.measureText(g).width+sp;});
+}
+function wrap(c,text,maxW,maxLines){
+  const toks=lang==='zh'?Array.from(text):text.split(/(\s+)/),out=[];let line='';
+  toks.forEach(function(tk){const test=line+tk;if(c.measureText(test).width>maxW&&line){out.push(line.replace(/\s+$/,''));line=tk.replace(/^\s+/,'');}else line=test;});
+  if(line)out.push(line);return out.slice(0,maxLines);
+}
+function drawOrganTo(c,x,y,w,h,p,mode){
+  const N=2400,pts=samples(p.organ,N),hm=heat(pts,p.seed,mode,.35+(100-p.idx['sfb'[mode]])/60),P=[];
+  const cx=x+w/2,cy=y+h/2-10,sc=Math.min(w,h)*.46,yaw=.7,cw=Math.cos(yaw),sw=Math.sin(yaw),ct=Math.cos(.28),st=Math.sin(.28);
+  for(let k=0;k<N;k++){const a=pts[3*k],b=pts[3*k+1],z=pts[3*k+2],x1=a*cw+z*sw,z1=-a*sw+z*cw,y1=b*ct-z1*st,z2=b*st+z1*ct;P.push([z2,x1,y1,hm[k]]);}
+  P.sort(function(u,v){return v[0]-u[0];});
+  c.save();c.beginPath();c.rect(x,y,w,h);c.clip();
+  P.forEach(function(q){const pp=1/(1+q[0]*.32),dep=clamp(.5-q[0]*.5,0,1);c.globalAlpha=.3+.65*dep;c.fillStyle=LUT[(q[3]*63)|0];c.beginPath();c.arc(cx+q[1]*sc*pp,cy-q[2]*sc*pp,1.1+1.9*dep,0,6.2832);c.fill();});
+  c.restore();c.globalAlpha=1;
+}
+function drawChartTo(c,x,y,w,h,pts){
+  const vals=pts.reduce(function(a,q){return a.concat([q.nat,q.pw-q.u,q.pw+q.u]);},[]);
+  let mn=Math.max(0,Math.floor((Math.min.apply(null,vals)-3)/5)*5),mx=Math.min(100,Math.ceil((Math.max.apply(null,vals)+3)/5)*5);if(mx-mn<10)mx=mn+10;
+  const X=function(d){return x+w*d/90;},Y=function(v){return y+h*(1-(v-mn)/(mx-mn));};
+  c.strokeStyle='#d6cfbe';c.lineWidth=1;[mn,(mn+mx)/2,mx].forEach(function(v){c.beginPath();c.moveTo(x,Y(v));c.lineTo(x+w,Y(v));c.stroke();});
+  c.fillStyle='rgba(31,107,92,.16)';c.beginPath();pts.forEach(function(q,i){if(i)c.lineTo(X(q.d),Y(q.pw+q.u));else c.moveTo(X(q.d),Y(q.pw+q.u));});
+  pts.slice().reverse().forEach(function(q){c.lineTo(X(q.d),Y(q.pw-q.u));});c.closePath();c.fill();
+  const ln=function(k){c.beginPath();pts.forEach(function(q,i){if(i)c.lineTo(X(q.d),Y(q[k]));else c.moveTo(X(q.d),Y(q[k]));});c.stroke();};
+  c.setLineDash([8,7]);c.strokeStyle='#55524a';c.lineWidth=2.4;ln('nat');c.setLineDash([]);c.strokeStyle='#1f6b5c';c.lineWidth=4;c.lineJoin='round';ln('pw');
+  const s=pts.filter(function(q){return q.d===D.hz;})[0];
+  c.fillStyle='#1f6b5c';c.beginPath();c.arc(X(s.d),Y(s.pw),7,0,6.2832);c.fill();
+  c.fillStyle='#f0ece2';c.strokeStyle='#55524a';c.lineWidth=3;c.beginPath();c.arc(X(s.d),Y(s.nat),6,0,6.2832);c.fill();c.stroke();
+  c.font='500 22px '+cssVar('--mono');c.textAlign='center';
+  const lx=clamp(X(s.d),24,x+w-24);c.fillStyle='#1f6b5c';c.fillText(f1(s.pw),lx,Y(s.pw+s.u)-12);c.fillStyle='#55524a';c.fillText(f1(s.nat),lx,Y(s.nat)+32);c.textAlign='left';
+}
+function drawQR(c,text,x,y,size){
+  if(typeof qrcode!=='function')return false;
+  try{const qr=qrcode(0,'M');qr.addData(text);qr.make();const n=qr.getModuleCount(),cell=size/(n+8);
+    c.fillStyle='#ffffff';c.fillRect(x,y,size,size);c.fillStyle='#191814';
+    for(let r=0;r<n;r++)for(let q=0;q<n;q++)if(qr.isDark(r,q))c.fillRect(x+(q+4)*cell,y+(r+4)*cell,cell+.6,cell+.6);
+    return true;}catch(e){return false;}
+}
+function makePoster(){
+  const K=1.6,W=750,H=1240,cv=document.createElement('canvas');cv.width=W*K;cv.height=H*K;
+  const c=cv.getContext('2d');c.scale(K,K);
+  const SERIF=cssVar('--serif'),SANS=cssVar('--sans'),MONO=cssVar('--mono'),I=shareInfo(),zh=lang==='zh',pts=project();
+  c.fillStyle='#f0ece2';c.fillRect(0,0,W,H);c.textBaseline='alphabetic';c.textAlign='left';
+  c.fillStyle='#191814';c.font='700 26px '+SANS;spaced(c,'GENIFLARE',56,84,9);
+  c.fillStyle='#7d7767';c.font='400 22px '+MONO;spaced(c,I.p.id,W-56,84,2,'right');
+  c.fillStyle='#76663f';c.font='500 19px '+SANS;spaced(c,zh?t('p.eb'):t('p.eb').toUpperCase(),56,132,zh?4:4);
+  c.fillStyle='#191814';c.fillRect(56,160,638,444);
+  drawOrganTo(c,56,160,638,444,I.p,{s:0,f:1,b:2}[D.st]);
+  c.fillStyle='#b3ac98';c.font='400 17px '+MONO;c.fillText(ORG[I.p.organ].ver,76,192);
+  const g=c.createLinearGradient(474,0,674,0);[0,22,38,50,63].forEach(function(i,n){g.addColorStop(n/4,LUT[i]);});
+  c.fillStyle=g;c.fillRect(474,566,200,6);c.fillStyle='#b3ac98';c.font='400 15px '+MONO;c.fillText(t('low'),474,592);c.textAlign='right';c.fillText(t('high'),674,592);c.textAlign='left';
+  c.fillStyle='#76663f';c.font='500 19px '+SANS;spaced(c,(zh?I.state+' · '+t('idx'):(I.state+' · '+t('idx')).toUpperCase()),56,662,zh?3:4);
+  c.fillStyle='#191814';c.font='400 150px '+SERIF;const ns=String(I.cur);c.fillText(ns,50,792);const nw=c.measureText(ns).width;
+  c.fillStyle='#7d7767';c.font='400 24px '+MONO;c.fillText('/100',58+nw,792);
+  c.fillStyle=I.d<0?'#9b2f22':'#1f6b5c';c.font='500 30px '+MONO;c.fillText((I.d<0?'↓ ':'↑ ')+Math.abs(I.d),56,842);
+  c.fillStyle='#7d7767';c.font='400 20px '+SANS;wrap(c,t('vsBase'),256,2).forEach(function(l,i){c.fillText(l,56,878+i*28);});
+  c.fillStyle='#76663f';c.font='500 19px '+SANS;spaced(c,zh?t('proj'):t('proj').toUpperCase(),366,662,zh?3:4);
+  drawChartTo(c,372,690,304,150,pts);
+  c.fillStyle='#7d7767';c.font='400 16px '+MONO;c.fillText(t('now'),372,878);c.textAlign='right';c.fillText('90'+(zh?' 天':'D'),676,878);c.textAlign='left';
+  c.fillStyle='#191814';c.font='400 27px '+SANS;wrap(c,resSentence(false),638,4).forEach(function(l,i){c.fillText(l,56,956+i*42);});
+  c.fillStyle='#d6cfbe';c.fillRect(56,1090,638,1);
+  const url=shareUrl(),hasQR=drawQR(c,url,56,1108,124);
+  c.fillStyle='#191814';c.font='700 25px '+SANS;
+  const tx0=hasQR?206:56,tw=W-56-tx0;
+  wrap(c,hasQR?t('p.scan'):t('p.nolib'),tw,2).forEach(function(l,i){c.fillText(l,tx0,1140+i*34);});
+  c.fillStyle='#7d7767';
+  if(hasQR){c.font='400 19px '+SANS;c.fillText(t('p.disc'),tx0,1218);}
+  else{c.font='400 15px '+MONO;c.fillText(t('p.disc'),tx0,1218);}
+  return cv.toDataURL('image/png');
+}
+function openShare(){
+  closeOvl();const p=PR[D.pi];
+  $('#poster').src=makePoster();$('#shareMsg').value=shareText();$('#posterHint').textContent=t(IS_WX?'sh.hintwx':'sh.hint');
+  openOvl('shareOvl');$('#shareOvl').scrollTop=0;
+  logT('ACCESS',`Prepared a share view of ${p.id} (poster and link)`,`生成 ${p.id} 的分享视图（海报与链接）`);
+}
+
+/* ================= events ================= */
+function openOvl(id){$('#'+id).classList.add('on');document.body.style.overflow='hidden';document.body.classList.add('ovl-open');}
+function closeOvl(){$$('.ovl').forEach(o=>o.classList.remove('on'));document.body.style.overflow='';document.body.classList.remove('ovl-open');}
+function goTo(sel){closeOvl();const el=$(sel);if(el)el.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});}
+document.addEventListener('click',e=>{
+  const el=e.target.closest('button[data-lang],[data-act],[data-hm],[data-pf],[data-st],[data-hz],[data-path],[data-int],[data-cons],[data-role],[data-rf],[data-ws],[data-close]');
+  if(!el)return;const d=el.dataset;
+  if(d.pf!==undefined||d.st||d.hz||d.path||d.int!==undefined||d.lang)touched=true;
+  if(d.close!==undefined){closeOvl();}   /* nav links navigate via href */
+  if(d.act==='share'){openShare();return;}
+  if(d.act==='send'){
+    if(IS_WX)$('#wxo').classList.add('on');
+    else if(navigator.share)navigator.share({title:shareTitle(),text:shareDesc(),url:shareUrl()}).catch(function(){});
+    else copy(shareText(),'toast.linkcopied');
+    return;
+  }
+  if(d.act==='wxclose'){$('#wxo').classList.remove('on');return;}
+  if(d.act==='copylink'){copy(shareUrl());return;}
+  if(d.act==='copytext'){copy(shareText());return;}
+  if(d.lang){lang=d.lang;try{localStorage.setItem('gf-lang',lang);}catch(_){}applyLang();return;}
+  if(d.hm!==undefined){heroMode=+d.hm;HERO&&HERO.setMode(heroMode);renderHeroModes();return;}
+  if(d.pf!==undefined){D.pi=+d.pf;renderHead();renderStates();renderProj();mountCard();const p=PR[D.pi];logT('ACCESS',`Viewed ${p.id} digital organ (${ORG[p.organ].n.en.toLowerCase()})`,`查看 ${p.id} 数字器官（${ORG[p.organ].n.zh}）`);return;}
+  if(d.st){D.st=d.st;CARD&&CARD.setMode({s:0,f:1,b:2}[D.st]);renderStates();renderProj();return;}
+  if(d.hz){D.hz=+d.hz;renderProj();return;}
+  if(d.path){D.path=d.path;renderProj();return;}
+  if(d.int!==undefined){D.inten=+d.int;renderProj();return;}
+  if(d.cons){CONSENT[d.cons]=!CONSENT[d.cons];const on=CONSENT[d.cons],n={doc:['Physician access','医生访问'],res:['Research use','研究授权'],mod:['Model improvement','模型改进']}[d.cons];logT('CONSENT',`Consent ${on?'granted':'withdrawn'}: ${n[0]}`,`${on?'已授予':'已撤回'}授权：${n[1]}`);return;}
+  if(d.role){roleF=d.role;wsOpen=null;renderWS();goTo('#workspaces');return;}
+  if(d.rf){roleF=d.rf;renderWS();return;}
+  if(d.ws){wsOpen=wsOpen===d.ws?null:d.ws;renderWS();return;}
+  if(d.act==='menu'){openOvl('menuOvl');return;}
+  if(d.act==='close'){closeOvl();return;}
+  if(d.act==='sign'){closeOvl();openOvl('signOvl');return;}
+  if(d.act==='access'){goTo('#access');return;}
+  if(d.act==='reqfrom'){goTo('#access');return;}
+  if(d.act==='forgot'){toast(t('toast.forgot'));return;}
+  if(d.act==='save'){
+    const txt=$('#note').value.trim(),p=PR[D.pi],pts=project(),s=pts.find(q=>q.d===D.hz),P0=PATHS[D.path],k=D.st;
+    if(!txt){toast(t('toast.note'));$('#note').focus();return;}
+    logT('SIM',`${P0.n.en}, ${INT[D.inten].n.en.toLowerCase()} intensity · ${p.id} ${ST[k].en.toLowerCase()} at ${D.hz}D → ${f1(s.pw)} (±${f1(s.u)})`,`${P0.n.zh}，强度${INT[D.inten].n.zh} · ${p.id} ${ST[k].zh} ${D.hz} 天 → ${f1(s.pw)}（±${f1(s.u)}）`);
+    logT('NOTE',txt,txt);$('#note').value='';toast(t('toast.saved'));return;
+  }
+});
+document.addEventListener('submit',e=>{
+  e.preventDefault();
+  if(e.target.id==='signForm'){signed=true;closeOvl();renderHdr();logT('ACCESS','Signed in: Dr. Li, cardiology (demo)','登录：李医生，心内科（演示）');toast(t('toast.signed'));goTo('#demo');}
+  if(e.target.id==='accessForm'){
+    const em=$('#ae');if(!/^\S+@\S+\.\S+$/.test(em.value.trim())){em.setCustomValidity(t('a.bad'));em.reportValidity();em.setCustomValidity('');em.focus();return;}
+    $('#accessBox').innerHTML=`<div class="ok"><h3>${t('a.ok')}</h3><p>${t('a.okp')}</p></div>`;
+  }
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOvl();});
+
+/* ================= init ================= */
+const FROM_LINK=readHash();
+applyLang();
+HERO=mountOrgan($('#heroCv'),'heart',5,{s:78,f:52,b:66},{n:2600,mode:heroMode,zoom:.3,dy:-.02});
+mountCard();
+initWx();
+function openLinked(){
+  const el=$('#demo'),de=document.documentElement;
+  if(el){de.style.scrollBehavior='auto';window.scrollTo(0,el.getBoundingClientRect().top+(window.pageYOffset||0)-64);de.style.scrollBehavior='';}
+  toast(t('toast.opened'));
+}
+if(FROM_LINK)setTimeout(openLinked,400);
+window.addEventListener('hashchange',function(){if(readHash()){closeOvl();applyLang();mountCard();setTimeout(openLinked,100);}});
+</script>
+</body>
+</html>
